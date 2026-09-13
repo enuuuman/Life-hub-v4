@@ -5,20 +5,20 @@ import { HomeView } from './views/HomeView';
 import { InputView } from './views/InputView';
 import { PlanView } from './views/PlanView';
 import { SimulationView } from './views/SimulationView';
+import { MoveBudgetView } from './views/MoveBudgetView';
 
 const App: React.FC = () => {
   return (
     <AppProvider>
       <AppLayout>
         {(activeTab) => (
-          /* key={activeTab} を指定することで、タブが変わるたびにアニメーションが発動します */
           <div key={activeTab} className="tab-content-fade">
             {activeTab === 'home' && <HomeView />}
             {activeTab === 'input' && <InputView />}
             {activeTab === 'plan' && <PlanView />}
             {activeTab === 'simulation' && <SimulationView />}
+            {activeTab === 'move' && <MoveBudgetView />}
 
-            {/* スムースな切り替えを実現するアニメーション定義 */}
             <style>{`
               @keyframes tabFadeIn {
                 from {
