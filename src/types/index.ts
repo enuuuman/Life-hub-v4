@@ -1,5 +1,5 @@
 export type AccountMode = 'personal' | 'partner' | 'joint';
-export type TabType = 'home' | 'input' | 'plan' | 'simulation';
+export type TabType = 'home' | 'input' | 'plan' | 'simulation' | 'move';
 
 export interface Assets {
   cash: number;
