@@ -166,6 +166,11 @@ export const MoveBudgetView: React.FC = () => {
   };
 
   const visibleItems = items.filter((item) => filter === 'all' || item.category === filter);
+  const filteredBudget = visibleItems.reduce((sum, item) => sum + item.budget, 0);
+  const filteredSpent = visibleItems.reduce((sum, item) => sum + (item.done ? item.actual : 0), 0);
+  const filteredRemaining = filteredBudget - filteredSpent;
+  const filteredDone = visibleItems.filter((item) => item.done).length;
+  const filteredLabel = filter === 'all' ? 'すべて' : CATEGORY_LABELS[filter];
   const progress = totals.budget > 0 ? Math.min(100, (totals.spent / totals.budget) * 100) : 0;
 
   return (
@@ -244,6 +249,30 @@ export const MoveBudgetView: React.FC = () => {
             </button>
           ))}
         </div>
+
+        {filter !== 'all' && (
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-xs font-medium text-slate-500">{filteredLabel} の予算合計</p>
+                <p className="mt-1 text-2xl font-bold tracking-tight">{yen(filteredBudget)}</p>
+              </div>
+              <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-500 dark:bg-slate-700 dark:text-slate-300">
+                {filteredDone} / {visibleItems.length} 完了
+              </span>
+            </div>
+            <div className="mt-3 grid grid-cols-2 gap-3 border-t border-slate-100 pt-3 text-sm dark:border-slate-700">
+              <div>
+                <p className="text-xs text-slate-500">支払済み</p>
+                <p className="mt-0.5 font-semibold">{yen(filteredSpent)}</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500">残り</p>
+                <p className="mt-0.5 font-semibold">{yen(filteredRemaining)}</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {showAdd && (
           <form onSubmit={addItem} className="rounded-2xl border border-indigo-100 bg-indigo-50/70 p-4 space-y-3 dark:border-indigo-900 dark:bg-indigo-950/30">
